@@ -1,0 +1,9 @@
+.idea/
+*.iml
+**/artifacts/**/*.tar
+target/
+# Ignore Mac DS_Store files
+.DS_Store
+**/logs/
+._.DS_Store
+.vertx

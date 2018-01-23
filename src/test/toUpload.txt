@@ -1,0 +1,3 @@
+Please upload me in chunks.
+Please use Tus protocol!
+Thank you and have a nice day.

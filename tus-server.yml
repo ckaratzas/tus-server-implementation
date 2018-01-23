@@ -1,0 +1,16 @@
+version: '2'
+services:
+   redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+   broker:
+    image: tus_server
+    container_name: tus_server
+    environment:
+        REDIS_IP: redis
+    ports:
+      - '6969:6969'
+    links:
+      - redis
