@@ -142,7 +142,7 @@ public class RedisUploadManager implements UploadManager {
     public long delegateToStoragePlugin(HttpServerRequest request, String id, long offset, Optional<UploadInfo.ChecksumInfo> checksum) {
         Optional<UploadInfo> uploadInfo = get(id);
         if (uploadInfo.isPresent()) {
-            long bytesStored = storagePlugin.delegateBytesToStorage(uploadInfo.get(), offset, checksum);
+            long bytesStored = storagePlugin.delegateBytesToStorage(request, uploadInfo.get(), offset, checksum);
             long totalSoFar = uploadInfo.get().getOffset() + bytesStored;
             uploadInfo.get().setOffset(totalSoFar);
             set(id, uploadInfo.get());

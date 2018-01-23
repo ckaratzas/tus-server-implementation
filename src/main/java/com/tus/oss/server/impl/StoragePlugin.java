@@ -1,6 +1,7 @@
 package com.tus.oss.server.impl;
 
 import com.tus.oss.server.core.UploadInfo;
+import io.vertx.core.http.HttpServerRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -14,7 +15,7 @@ import java.util.Optional;
 @Component
 class StoragePlugin {
 
-    long delegateBytesToStorage(UploadInfo info, long fromOffset, Optional<UploadInfo.ChecksumInfo> checksum) {
+    long delegateBytesToStorage(HttpServerRequest request, UploadInfo info, long fromOffset, Optional<UploadInfo.ChecksumInfo> checksum) {
         //Replace it with a storage implementation of your own.
         //Simulate IO operation...
         try {
