@@ -1,9 +1,10 @@
 package com.tus.oss.server.core;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +34,13 @@ public class OptionsHandler {
         this.tusChecksumAlgorithms = tusChecksumAlgorithms;
     }
 
+    @Operation(summary = "Provides information about the server implementation of the Tus.io protocol.", method = "OPTIONS",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Server Information.",
+                            headers = {@Header(name = "Tus-Version", description = "The versions of Tus.io protocol supported.", required = true),
+                                    @Header(name = "Tus-Max-Size", description = "The maximum length server allows to be uploaded.", required = true),
+                                    @Header(name = "Tus-Extension", description = "Tus.io extensions currently supported.", required = true),
+                                    @Header(name = "Tus-Checksum-Algorithm", description = "Tus.io checksum algorithms currently supported.", required = true)})})
     void handleRequest(RoutingContext ctx) {
         HttpServerResponse response = ctx.response();
         response.putHeader("Tus-Resumable", tusResumable);

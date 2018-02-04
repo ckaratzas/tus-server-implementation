@@ -1,5 +1,10 @@
 package com.tus.oss.server.core;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
@@ -27,6 +32,11 @@ public class DeleteHandler {
         this.uploadManager = uploadManager;
     }
 
+    @Operation(summary = "Deletes a specific upload.", method = "DELETE",
+            responses = {@ApiResponse(responseCode = "204", description = "Request processed")},
+            parameters = {@Parameter(in = ParameterIn.PATH, name = "uploadID",
+                    required = true, description = "The ID of the upload unit of work",
+                    schema = @Schema(type = "string", format= "uuid"))})
     void handleRequest(RoutingContext ctx) {
         String uploadID = ctx.request().getParam("uploadID");
         HttpServerResponse response = ctx.response();

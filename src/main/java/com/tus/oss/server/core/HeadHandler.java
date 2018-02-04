@@ -1,5 +1,11 @@
 package com.tus.oss.server.core;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.headers.Header;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
@@ -28,6 +34,14 @@ public class HeadHandler {
         this.uploadManager = uploadManager;
     }
 
+    @Operation(summary = "Provides status information for a specific upload.", method = "HEAD",
+            responses = {
+                    @ApiResponse(responseCode = "404", description = "Upload unit of work not found."),
+                    @ApiResponse(responseCode = "200", description = "Upload unit of work found.",
+                            headers = {@Header(name = "Upload-Length", description = "The total length of the upload unit of work.", required = true),
+                                    @Header(name = "Upload-Offset", description = "How many bytes have been uploaded so far.", required = true)})},
+            parameters = {@Parameter(in = ParameterIn.PATH, name = "uploadID",
+                    required = true, description = "The ID of the upload unit of work", schema = @Schema(type = "string", format = "uuid"))})
     void handleRequest(RoutingContext ctx) {
         String uploadID = ctx.request().getParam("uploadID");
         HttpServerResponse response = ctx.response();

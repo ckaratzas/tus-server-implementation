@@ -1,5 +1,6 @@
 package com.tus.oss.server.core;
 
+import com.tus.oss.server.openapi.OpenApiRoutePublisher;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
@@ -48,9 +49,11 @@ public class ServerVerticle extends AbstractVerticle {
         router.options(contextPath).handler(optionsHandler::handleRequest);
         router.post(contextPath).handler(postHandler::handleRequest);
         router.delete(contextPath + ":uploadID").handler(deleteHandler::handleRequest);
-        router.patch(contextPath + ":uploadID").handler(ctx -> patchHandler.handleRequest(ctx, vertx));
+        router.patch(contextPath + ":uploadID").handler(patchHandler::handleRequestForPatch);
         //POST can replace PATCH because of buggy jre...
-        router.post(contextPath + ":uploadID").handler(ctx -> patchHandler.handleRequest(ctx, vertx));
+        router.post(contextPath + ":uploadID").handler(patchHandler::handleRequestForPost);
+        OpenApiRoutePublisher.publishOpenApiSpec(router, contextPath + "spec",
+                "Tus.io Resumable File Upload Protocol Server", "1.0.0", "http://" + host + ":" + port + "/");
         vertx.createHttpServer().requestHandler(router::accept).listen(port, host);
     }
 }
